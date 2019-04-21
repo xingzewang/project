@@ -1,17 +1,15 @@
 package com.xingze.controller;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import java.io.InputStream;
-import org.apache.ibatis.io.Resources;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.xingze.bean.student;
-import com.xingze.bean.teacher;
+import com.xingze.utils.MybatisUtils;
 
 @Controller
-public class HelloController {
+public class studentController {
 	
 	@RequestMapping("/hello")
 	public String hello()
@@ -19,77 +17,123 @@ public class HelloController {
 		return "hello";	
 	}
 	
-	@RequestMapping("/studentLogin")
-	public String studentLogin(student student)
-	{
-		//创建Session实例
-		SqlSession sqlSession =null;
-		//try语句里读取MybatisCfg.xml文件
-		try(InputStream is=Resources.getResourceAsStream("MybatisCfg.xml");)
-		{
-			//初始化mybatis，创建SqlSessionFactory类的实例
-			SqlSessionFactory  sqlSessionFactory=new SqlSessionFactoryBuilder().build(is);
-			sqlSession=sqlSessionFactory.openSession();
-			//创建students对象
-			student ss=new student("123456789","王王王","男","123456789","666666");
-			//插入数据
-			sqlSession.insert("com.xingze.mapper.studentMapper.studentLogin",ss);
-			//提交事务
+	@RequestMapping("/insertStudent")
+	public void insertStudent(student s)
+	{	
+		SqlSession sqlSession=null;
+		try{
+			sqlSession=MybatisUtils.getSession();
+			sqlSession.insert("com.xingze.mapper.studentMapper.insertStudent",s);
+			//提交事务，下同
 			sqlSession.commit();
 		}catch(Exception e)
 		{
-			//回滚事务
+			//回滚事务，下同
 			sqlSession.rollback();
 			e.printStackTrace();
-			return "false";
+			//return "false";
 			
 		}finally
 		{
-			try {
-				//关闭sqlSession
-				if(sqlSession!=null)  sqlSession.close();
-			}catch(Exception e) {
-				e.printStackTrace();
+			if(sqlSession!=null)  {
+				sqlSession.close();
 			}
 		}
-		return "index";
+		//return "index";
 	}
 
-	
-	@RequestMapping("/teacherLogin")
-	public String teacherLogin(teacher teacher)
-	{
-		//创建Session实例
-		SqlSession sqlSession =null;
-		//try语句里读取MybatisCfg.xml文件
-		try(InputStream is=Resources.getResourceAsStream("MybatisCfg.xml");)
-		{
-			//初始化mybatis，创建SqlSessionFactory类的实例
-			SqlSessionFactory  sqlSessionFactory=new SqlSessionFactoryBuilder().build(is);
-			sqlSession=sqlSessionFactory.openSession();
-			//创建teacher对象
-			teacher ss=new teacher("153645","王王王","1569874563","456789");
-			//插入数据
-			sqlSession.insert("com.xingze.mapper.teacherMapper.teacherLogin",ss);
-			//提交事务
-			sqlSession.commit();
-		}catch(Exception e)
-		{
-			//回滚事务
+	@RequestMapping(value="/getAllStudent")
+	public void getAllStudent() {
+		SqlSession sqlSession=null;
+		try {
+				sqlSession=MybatisUtils.getSession();
+				List<student> studentList=new ArrayList<student>();
+				studentList=sqlSession.selectList("com.xingze.mapper.studentMapper.getAllStudent");
+				sqlSession.commit();
+				for(student s : studentList) {
+					System.out.println(s);
+				}
+		}catch(Exception e) {
 			sqlSession.rollback();
 			e.printStackTrace();
-			return "false";
-			
-		}finally
-		{
-			try {
-				//关闭sqlSession
-				if(sqlSession!=null)  sqlSession.close();
-			}catch(Exception e) {
-				e.printStackTrace();
+		}finally {
+			if(sqlSession!=null){
+				sqlSession.close();
 			}
 		}
-		return "index";
 	}
+	
+	@RequestMapping(value="getStudentById")
+	public void getStudentById(String id)
+	{
+		SqlSession sqlSession=null;
+		try {
+				sqlSession=MybatisUtils.getSession();
+				student s=new student();
+				s=sqlSession.selectOne("com.xingze.mapper.studentMapper.getStudentById",id);
+				sqlSession.commit();
+				System.out.println(s);
+		}catch(Exception e) {
+			sqlSession.rollback();
+			e.printStackTrace();
+		}finally {
+			if(sqlSession!=null){
+				sqlSession.close();
+			}
+		}
+	}
+	
+	@RequestMapping(value="deleteStudentById")
+	public void deleteStudentById(String id)
+	{
+		SqlSession sqlSession=null;
+		try {
+				sqlSession=MybatisUtils.getSession();
+				sqlSession.delete("com.xingze.mapper.studentMapper.deleteStudentById",id);
+				sqlSession.commit();
+		}catch(Exception e) {
+			sqlSession.rollback();
+			e.printStackTrace();
+		}finally {
+			if(sqlSession!=null){
+				sqlSession.close();
+			}
+		}
+	}
+	
+	@RequestMapping(value="updateStudentById")  //修改的逻辑是先查找再修改
+	public void updateStudentById(student s)
+	{
+		SqlSession sqlSession=null;
+		try {
+				sqlSession=MybatisUtils.getSession();
+				//根据传入的student对象id值查询student对象
+				student ss=sqlSession.selectOne("com.xingze.mapper.studentMapper.getStudentById",s.getId());
+				//根据传入的对象值设置值
+				ss.setName(s.getName());
+				ss.setPassword(s.getPassword());
+				ss.setSex(s.getSex());
+				ss.setTelphone(s.getTelphone());
+				//执行更新操作
+				sqlSession.update("com.xingze.mapper.studentMapper.updateStudentById",ss);
+				sqlSession.commit();
+		}catch(Exception e) {
+			sqlSession.rollback();
+			e.printStackTrace();
+		}finally {
+			if(sqlSession!=null){
+				sqlSession.close();
+			}
+		}
+	}
+	/*
+	public static void main(String[] args) {
+		studentController s=new studentController();
+		student sss=new student("1234560","福建","男","565656","7777777");
+		s.insertStudent(sss);
+		//s.getStudentById("1897456");
+		//s.deleteStudentById("1897456");
+	}
+	*/
 	
 }

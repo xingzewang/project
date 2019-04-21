@@ -55,31 +55,38 @@
        <scope>provided</scope>
     </dependency>
     
-    <!-- spring-boot-devtols的依赖配置 -->
+    <!-- spring-boot-devtools的依赖配置 -->
     <dependency>
        <groupId>org.springframework.boot</groupId>
        <artifactId>spring-boot-devtools</artifactId>
        <optional>true</optional>
-       <scope>true</scope>
     </dependency>
     
     <dependency>
-  		<groupId>org.mybatis</groupId>
-  		<artifactId>mybatis</artifactId>
-  		<version>3.4.1</version>
-	</dependency>
-	
-	<dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <!--<version>5.1.38</version>  -->
+        <groupId>org.mybatis</groupId>
+        <artifactId>mybatis</artifactId>
+        <version>3.5.0</version>
     </dependency>
-        
+    
+    <!-- 引入mysql驱动依赖 -->
+    <dependency>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	    <!-- <version>5.1.10</version> -->
+    </dependency>
+    
+    <!-- 引入日志框架log4j的依赖 -->
+    <dependency>
+	    <groupId>log4j</groupId>
+	    <artifactId>log4j</artifactId>
+	    <version>1.2.17</version>
+	</dependency>
+    
   </dependencies>
   
   <build>
   
-    <plugins>
+   <plugins>
        <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
@@ -89,7 +96,8 @@
        </plugin>
     
     </plugins>
-    
+  
+   
     <finalName>xingze</finalName>
   </build>
 </project>

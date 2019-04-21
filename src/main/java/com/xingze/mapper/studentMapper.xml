@@ -4,7 +4,25 @@
 
 
 <mapper namespace="com.xingze.mapper.studentMapper">
-   <insert id="studentLogin" parameterType="com.xingze.bean.student"  useGeneratedKeys="false">
+   
+   <insert id="insertStudent" parameterType="com.xingze.bean.student"  useGeneratedKeys="false">
         INSERT INTO student(id,name,sex,telphone,password) VALUES(#{id},#{name},#{sex},#{telphone},#{password})
    </insert>
+   
+   <select id="getAllStudent"  resultType="com.xingze.bean.student">
+        SELECT * FROM  student;
+   </select>
+   
+   <select id="getStudentById" resultType="com.xingze.bean.student" parameterType="String">
+        SELECT * FROM student WHERE id =#{id}
+   </select>
+   
+   <delete id="deleteStudentById"  parameterType="String">
+       DELETE FROM student WHERE id=#{id}
+   </delete>
+   
+   <update id="updateStudentById" parameterType="com.xingze.bean.student">
+       UPDATE student SET  name=#{name},sex=#{sex},telphone=#{telphone},password=#{password} WHERE id=#{id}
+   </update>
+   
 </mapper>

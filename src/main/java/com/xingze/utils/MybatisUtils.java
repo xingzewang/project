@@ -13,9 +13,9 @@ public class MybatisUtils {
   static {
       try{
           //1 读取配置文件
-          String resource ="MybatisCfg.xml";
+          String resource ="mybatis-config.xml";
           Reader reader = Resources.getResourceAsReader(resource);
-          sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader );
+          sqlSessionFactory = new SqlSessionFactoryBuilder().build(reader);
       }
       catch(Exception e)
       {
