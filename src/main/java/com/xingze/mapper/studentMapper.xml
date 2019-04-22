@@ -6,7 +6,7 @@
 <mapper namespace="com.xingze.mapper.studentMapper">
    
    <insert id="insertStudent" parameterType="com.xingze.bean.student"  useGeneratedKeys="false">
-        INSERT INTO student(id,name,sex,telphone,password) VALUES(#{id},#{name},#{sex},#{telphone},#{password})
+        INSERT INTO student(student_id,student_name,sex,telphone,password) VALUES(#{student_id},#{student_name},#{sex},#{telphone},#{password})
    </insert>
    
    <select id="getAllStudent"  resultType="com.xingze.bean.student">
@@ -14,15 +14,15 @@
    </select>
    
    <select id="getStudentById" resultType="com.xingze.bean.student" parameterType="String">
-        SELECT * FROM student WHERE id =#{id}
+        SELECT * FROM student WHERE student_id =#{student_id}
    </select>
    
    <delete id="deleteStudentById"  parameterType="String">
-       DELETE FROM student WHERE id=#{id}
+       DELETE FROM student WHERE student_id=#{student_id}
    </delete>
    
    <update id="updateStudentById" parameterType="com.xingze.bean.student">
-       UPDATE student SET  name=#{name},sex=#{sex},telphone=#{telphone},password=#{password} WHERE id=#{id}
+       UPDATE student SET  student_name=#{student_name},sex=#{sex},telphone=#{telphone},password=#{password} WHERE student_id=#{student_id}
    </update>
    
 </mapper>

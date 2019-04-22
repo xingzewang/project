@@ -108,9 +108,9 @@ public class studentController {
 		try {
 				sqlSession=MybatisUtils.getSession();
 				//根据传入的student对象id值查询student对象
-				student ss=sqlSession.selectOne("com.xingze.mapper.studentMapper.getStudentById",s.getId());
+				student ss=sqlSession.selectOne("com.xingze.mapper.studentMapper.getStudentById",s.getStudent_id());
 				//根据传入的对象值设置值
-				ss.setName(s.getName());
+				ss.setStudent_name(s.getStudent_name());
 				ss.setPassword(s.getPassword());
 				ss.setSex(s.getSex());
 				ss.setTelphone(s.getTelphone());

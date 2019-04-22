@@ -23,6 +23,6 @@
     <mappers>
         <!-- 引入映射文件-->
         <mapper resource="com/xingze/mapper/studentMapper.xml"/>
-       
+        <mapper resource="com/xingze/mapper/teacherMapper.xml"/>
     </mappers>
 </configuration>
